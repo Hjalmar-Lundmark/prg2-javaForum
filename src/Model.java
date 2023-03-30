@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Objects;
 
 public class Model {
     Connection conn = null;
@@ -20,11 +21,11 @@ public class Model {
         }
     }
 
-    public String getPosts() {
+    public String getPosts() {  //maybe change to return result and do while(rslt.next)... in controller?
         String output = "";
         try {
             stmt = conn.createStatement();
-            SQLQuery = "SELECT * FROM hl21forum";
+            SQLQuery = "SELECT * FROM hl21forum ORDER BY id DESC";
             result = stmt.executeQuery(SQLQuery);
 
             /*ResultSetMetaData metadata = result.getMetaData();
@@ -46,12 +47,15 @@ public class Model {
             */
 
             while (result.next()) {
-                output += result.getInt("id") + ", " +
+                /*output += result.getInt("id") + ", " +
                         result.getString("title") + ", " +
                         result.getString("content") + ", " +
                         result.getTimestamp("createdAt") + ", " +
-                        result.getInt("authorId") + "\n" + "\n";
-                //System.out.println(output);
+                        result.getInt("authorId") + "\n" + "\n";*/
+                output += "Posted by: " + result.getInt("authorId") + "\n" +
+                        result.getString("title") + "\n" +
+                        result.getString("content") + "\n" +
+                        "Posted: " + result.getTimestamp("createdAt") + "\n" + "\n";
             }
 
             /*//INSERT command
@@ -81,6 +85,23 @@ public class Model {
 
     public void login(String u, String pwd) {
         // check login creds, then loggedIn = true
+        if (Objects.equals(u, "")) {
+            //error
 
+        }
+        if (Objects.equals(pwd, "")) {
+            //error
+
+        }
+
+        try {
+            stmt = conn.createStatement();
+            SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
+            result = stmt.executeQuery(SQLQuery);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

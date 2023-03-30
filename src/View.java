@@ -3,9 +3,8 @@ import javax.swing.*;
 public class View {
     private JPanel root;
     private JTextArea textArea1;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-    private JButton button1;
+    private JButton registerButton;
+    private JButton loginButton;
 
     public JPanel getPanel() {
         return root;
@@ -13,5 +12,13 @@ public class View {
 
     public void addPost(String in) {
         textArea1.append(in);
+    }
+
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
     }
 }

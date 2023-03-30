@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Controller {
     View theView;
@@ -8,15 +10,33 @@ public class Controller {
         this.theView = theView;
         this.theModel = theModel;
 
+        login loginPage;
+        register registerPage;
+
         JFrame frame = new JFrame("Forum");
         frame.setContentPane(theView.getPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
         frame.setVisible(true);
 
+
         theModel.connect();
-        //theModel.getPosts();
         theView.addPost(theModel.getPosts());
+
+        theView.getLoginButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //set login visible
+
+            }
+        });
+        theView.getRegisterButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //set register visible
+
+            }
+        });
 
     }
 
