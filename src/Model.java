@@ -99,7 +99,17 @@ public class Model {
             SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
             result = stmt.executeQuery(SQLQuery);
 
+            if (u == result.getString("name")) {
+                //bcrypt
+                if (/*crypted pwd == pwdInDB */) {
+                   loggedIn = true;
+                }
+            }
 
+
+
+            stmt.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
