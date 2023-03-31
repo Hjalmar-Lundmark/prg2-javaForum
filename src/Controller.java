@@ -12,6 +12,7 @@ public class Controller {
 
         login loginPage;
         register registerPage;
+        post postPage;
 
         JFrame frame = new JFrame("Forum");
         frame.setContentPane(theView.getPanel());
@@ -26,17 +27,33 @@ public class Controller {
         theView.getLoginButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //set login visible
+                //set loginView visible
 
             }
         });
         theView.getRegisterButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //set register visible
+                //set registerView visible
 
             }
         });
+        theView.getCreatePostButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //set postView visible
+
+            }
+        });
+
+        //TODO: fix, just an idea for now
+        if (theModel.isLoggedIn()) {
+            theView.changeLabel("Logged in as " + theModel.getUsername());
+            theView.getLoginButton().setVisible(false);
+            theView.getRegisterButton().setVisible(false);
+        } else {
+            theView.changeLabel("Guest");
+        }
 
     }
 

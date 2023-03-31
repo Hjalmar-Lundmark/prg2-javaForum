@@ -10,7 +10,24 @@ public class Model {
     Statement stmt;
     String SQLQuery;
     ResultSet result;
-    boolean loggedIn = false;
+    private boolean loggedIn = false;
+    private String username = "";
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public void connect() {
         try {
@@ -28,30 +45,7 @@ public class Model {
             SQLQuery = "SELECT * FROM hl21forum ORDER BY id DESC";
             result = stmt.executeQuery(SQLQuery);
 
-            /*ResultSetMetaData metadata = result.getMetaData();
-            int numCols = metadata.getColumnCount();
-            for (int i = 1 ; i <= numCols ; i++) {
-                System.out.println(metadata.getColumnClassName(i));
-            }*/
-
-            /*
             while (result.next()) {
-                String output = "";
-                output += result.getInt("id") + ", " +
-                        result.getString("title") + ", " +
-                        result.getString("content") + ", " +
-                        result.getTimestamp("createdAt") + ", " +
-                        result.getInt("authorId");
-                System.out.println(output);
-            }
-            */
-
-            while (result.next()) {
-                /*output += result.getInt("id") + ", " +
-                        result.getString("title") + ", " +
-                        result.getString("content") + ", " +
-                        result.getTimestamp("createdAt") + ", " +
-                        result.getInt("authorId") + "\n" + "\n";*/
                 output += "Posted by: " + result.getInt("authorId") + "\n" +
                         result.getString("title") + "\n" +
                         result.getString("content") + "\n" +
@@ -75,8 +69,6 @@ public class Model {
 
             stmt.close();
             conn.close();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -101,12 +93,44 @@ public class Model {
 
             if (u == result.getString("name")) {
                 //bcrypt
-                if (/*crypted pwd == pwdInDB */) {
+                if (BCrypt.checkpw(pwd, result.getString("password"))) {
                    loggedIn = true;
+                    username = u;
                 }
             }
 
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void register(String u, String pwd, String pwdCon) {
+        if (Objects.equals(u, "")) {
+            //error
+
+        }
+        if (Objects.equals(pwd, "")) {
+            //error
+
+        }
+        if (pwd.equals(pwdCon)) {
+            //error
+        }
+
+        try {
+            stmt = conn.createStatement();
+            SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
+            result = stmt.executeQuery(SQLQuery);
+
+            if (u == result.getString("name")) {
+                SQLQuery = "INSERT INTO hl21users(name, password) VALUES (" + u + ", " + BCrypt.hashpw(pwd, BCrypt.gensalt()) + ")";
+                result = stmt.executeQuery(SQLQuery);
+
+                loggedIn = true;
+                username = u;
+            }
 
             stmt.close();
             conn.close();

@@ -11,3 +11,8 @@ kanske hur kryptering av lösenord ska fungera.
 
 30/3: Skapade fler veiws för det jag kommer behöva och började koppla upp dem, ändrade layout för posts och nav. 
 Jag började också med koden för login. 
+
+31/3: Skapade ett till fönster, gjorde login() och register() klara (?), uppdaterade layout på alla fönster. 
+Nästa lektion borde jag fixa de mindre fönstrerna så de syns när jag klickar på deras knappar. 
+Jag är lite osäker på var jag sätta deras frames, för de ska vara undergrejer till main-viewn så lägga dem där eller 
+i Controller. 
