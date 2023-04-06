@@ -2,16 +2,17 @@ import java.sql.*;
 import java.util.Objects;
 
 public class Model {
-    Connection conn = null;
-    String user = dbData.user;
-    String db = dbData.URL;
-    String host = dbData.host;
-    String pwd = dbData.pwd;
-    Statement stmt;
-    String SQLQuery;
-    ResultSet result;
+    private Connection conn = null;
+    private String user = dbData.user;
+    private String db = dbData.URL;
+    private String host = dbData.host;
+    private String pwd = dbData.pwd;
+    private Statement stmt;
+    private String SQLQuery;
+    private ResultSet result;
     private boolean loggedIn = false;
     private String username = "";
+    private String error = "";
 
     public boolean isLoggedIn() {
         return loggedIn;
@@ -77,65 +78,80 @@ public class Model {
 
     public void login(String u, String pwd) {
         // check login creds, then loggedIn = true
-        if (Objects.equals(u, "")) {
+        error = "";
+        if (u.length() < 2) {
             //error
-
+            error += "Username is Required \n";
         }
-        if (Objects.equals(pwd, "")) {
-            //error
-
+        if (pwd.length() < 2) {
+            error += "Password is Required \n";
         }
 
-        try {
-            stmt = conn.createStatement();
-            SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
-            result = stmt.executeQuery(SQLQuery);
+        if (error.length() < 5) { // if error exists, dont run this
+            try {
+                System.out.println("please work 2");
+                stmt = conn.createStatement();
+                SQLQuery = "SELECT * FROM hl21users WHERE name='" + u + "'";
+                result = stmt.executeQuery(SQLQuery);
 
-            if (u == result.getString("name")) {
-                //bcrypt
-                if (BCrypt.checkpw(pwd, result.getString("password"))) {
-                   loggedIn = true;
-                    username = u;
+                System.out.println("please work 3");
+                System.out.println(result.getString("name") + " och " + u);
+                if (u == result.getString("name")) {
+                    //bcrypt
+                    System.out.println(result.getString("password") + " och " + pwd);
+                    if (BCrypt.checkpw(pwd, result.getString("password"))) {
+                        loggedIn = true;
+                        username = u;
+                    }
                 }
-            }
 
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+                stmt.close();
+                conn.close();
+
+                System.out.println("Login worked");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println(error);
         }
     }
 
     public void register(String u, String pwd, String pwdCon) {
-        if (Objects.equals(u, "")) {
-            //error
-
+        error = "";
+        if (u.length() < 2) {
+            error += "Username is Required \n";
         }
-        if (Objects.equals(pwd, "")) {
-            //error
-
+        if (pwd.length() < 2) {
+            error += "Password is Required \n";
         }
         if (pwd.equals(pwdCon)) {
-            //error
+            error += "Password and confirmation does not match \n";
         }
 
-        try {
-            stmt = conn.createStatement();
-            SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
-            result = stmt.executeQuery(SQLQuery);
-
-            if (u == result.getString("name")) {
-                SQLQuery = "INSERT INTO hl21users(name, password) VALUES (" + u + ", " + BCrypt.hashpw(pwd, BCrypt.gensalt()) + ")";
+        if (error.length() < 5) {
+            try {
+                stmt = conn.createStatement();
+                SQLQuery = "SELECT * FROM hl21users WHERE name=" + u + "";
                 result = stmt.executeQuery(SQLQuery);
 
-                loggedIn = true;
-                username = u;
-            }
+                if (u == result.getString("name")) {
+                    SQLQuery = "INSERT INTO hl21users(name, password) VALUES (" + u + ", " + BCrypt.hashpw(pwd, BCrypt.gensalt()) + ")";
+                    result = stmt.executeQuery(SQLQuery);
 
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+                    loggedIn = true;
+                    username = u;
+                }
+
+                stmt.close();
+                conn.close();
+
+                System.out.println("Register and login worked");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println(error);
         }
     }
 }

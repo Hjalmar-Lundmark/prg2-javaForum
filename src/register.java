@@ -11,16 +11,16 @@ public class register {
         return root;
     }
 
-    public JTextField getTextField1() {
-        return textField1;
+    public String getTextField1() {
+        return textField1.getText();
     }
 
-    public JPasswordField getPasswordField1() {
-        return passwordField1;
+    public String getPasswordField1() {
+        return passwordField1.getText();
     }
 
-    public JPasswordField getPasswordField2() {
-        return passwordField2;
+    public String getPasswordField2() {
+        return passwordField2.getText();
     }
 
     public JButton getRegisterButton() {

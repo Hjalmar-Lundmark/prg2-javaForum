@@ -16,3 +16,6 @@ Jag började också med koden för login.
 Nästa lektion borde jag fixa de mindre fönstrerna så de syns när jag klickar på deras knappar. 
 Jag är lite osäker på var jag sätta deras frames, för de ska vara undergrejer till main-viewn så lägga dem där eller 
 i Controller. 
+
+6/4: Jag fick login och de andra rutorna att synas på deras knapptryck och sedan har jag jobbat med deras logik 
+(alltså att logga in användaren, etc). Den koden är inte riktigt klar men väldigt nära. 
